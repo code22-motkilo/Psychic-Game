@@ -4,13 +4,9 @@
 
 
 
-// prompt to ask user if they want to play a game?
-//var playGame = prompt("Do you want to play a game?: (y)es or (n)o");
-//var playChoice = playGame;
-//console.log(playChoice);
-
 // set up array of letters
-var letterArray = ["a", "b", "c", "e", "f", "g", "h", "i", "j", "k"];
+var letterArray = ("abcdefghijklmnopqrstuvwxyz").split("");
+console.log(letterArray);
 
 // array for picked letters
 var userPickedLetters = [];
@@ -32,44 +28,62 @@ var computerPicked = document.getElementById("computer-picked");
 
 // Game Functionality
 //===============================================================================
-document.onkeyup = function (event) {
+
+// prompt to ask user if they want to play a game?
+var playGame = prompt("Do you want to play a game?: (y)es or (n)o");
+var playChoice = playGame;
+console.log(playChoice);
+
+// if player picks (y)es 
+
+if (playChoice == 'y' && numberOfGuesses >= 1) {
 
     // allows the computer to randomly choose a letter
     var computerChoice = letterArray[Math.floor(Math.random() * letterArray.length)];
 
-    //gets User's letter choice
-    var userInput = event.key.toLowerCase();
 
-    // Determine if user and compter match:
+    document.onkeyup = function (event) {
 
-    // If they DO NOT match
-    if (userInput !== computerChoice) {
-        console.log("Sorry! Guess Again...");
-        numberOfGuesses--;
-        userPickedLetters.push(" " + userInput);
-        computerPickedLetters.push(" " + computerChoice)
-
-        // Remaining guesses
-        if (numberOfGuesses >= 1) {
-            console.log("You have " + numberOfGuesses + " remaining");
+        //gets User's letter choice
+        var userInput = event.key.toLowerCase();
+    
+        // Determine if user and compter match:
+    
+        // If they DO NOT match
+        if (userInput !== computerChoice) {
+            console.log("Sorry! Guess Again...");
+            numberOfGuesses--;
+            userPickedLetters.push(" " + userInput);
+            
+    
+            // Remaining guesses
+            if (numberOfGuesses >= 1) {
+                console.log("You have " + numberOfGuesses + " remaining");
+            }
+            // all out of guesses
+            else {
+                console.log("Sorry, you are out of allowed guesses.");
+                losses++;
+                computerPickedLetters.push(" " + computerChoice)
+            }
         }
-        // all out of guesses
+        // if they DO MATCH
         else {
-            console.log("Sorry, you are out of allowed guesses.");
-            losses++;
+            console.log("Yes! You must be PSYCHIC!!! The compute also picked: " + computerChoice);
+            wins++;
         }
-    }
-    // if they DO MATCH
-    else {
-        console.log("Yes! You must be PSYCHIC!!!");
-        wins++;
-    }
+    
+        // Send results to html display
+        userLetter.textContent = "letters you picked: " + userPickedLetters;
+        remainingGuesses.textContent = "remaining guesses: " + numberOfGuesses;
+        win_score.textContent = "wins: " + wins;
+        loss_score.textContent = "losses: " + losses;
+        computerPicked.textContent = "The computer picked: " + computerPickedLetters;
+    
+    };
 
-    // Send results to html display
-    userLetter.textContent = "letters picked: " + userPickedLetters;
-    remainingGuesses.textContent = "remaining guesses: " + numberOfGuesses;
-    win_score.textContent = "wins: " + wins;
-    loss_score.textContent = "losses: " + losses;
-    computerPicked.textContent = "The computer picked: " + computerPickedLetters;
 
+} else {
+    alert("you can not play unless you type 'y' ");
 };
+
