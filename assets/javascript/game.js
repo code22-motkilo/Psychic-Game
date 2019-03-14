@@ -36,13 +36,17 @@ console.log(playChoice);
 
 // if player picks (y)es 
 
-if (playChoice == 'y' && numberOfGuesses >= 1) {
+if (playChoice === 'y') {
 
     // allows the computer to randomly choose a letter
     var computerChoice = letterArray[Math.floor(Math.random() * letterArray.length)];
 
 
     document.onkeyup = function (event) {
+
+        if (numberOfGuesses === 0) {
+            return;
+        }
 
         //gets User's letter choice
         var userInput = event.key.toLowerCase();
